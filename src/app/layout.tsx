@@ -1,29 +1,14 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Powerpoint Technical Services | Premium Dubai Interior Design & Fit-Out',
-  description: '13+ years experience in luxury interior design and fit-out services in Dubai. Commercial & residential projects. Free consultation available.',
-  keywords: 'Dubai interior design, fit-out services, commercial interior, villa design, office design',
-  openGraph: {
-    type: 'website',
-    locale: 'en_AE',
-    url: 'https://immersioninterior.ae',
-    siteName: 'PowerPoint Technical Services',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-      }
-    ]
-  }
+  title: 'Immersion Interior Design | Premium Dubai Interior Design & Fit-Out',
+  description: '13+ years experience in luxury interior design and fit-out services in Dubai.',
 }
 
 export default function RootLayout({
@@ -32,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <Navbar />
         <main className="min-h-screen">
           {children}

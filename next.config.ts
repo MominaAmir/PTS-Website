@@ -1,8 +1,16 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Remove these lines for development:
+  // basePath: "/PTS-Website",
+  // assetPrefix: "/PTS-Website/",
+  
+  // Keep only these:
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  trailingSlash: true,
 };
 
-export default nextConfig;
+module.exports = nextConfig;
