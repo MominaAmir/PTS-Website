@@ -19,7 +19,7 @@ const NextStudio = dynamic(
   }
 )
 
-import config from '../../sanity.config'
+import config from '../../../sanity.config'
 
 export default function StudioPage() {
   const [isMounted, setIsMounted] = useState(false)
