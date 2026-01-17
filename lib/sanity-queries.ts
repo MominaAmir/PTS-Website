@@ -1,7 +1,8 @@
-import { getSanityClient } from './sanity';
+import { getSanityClient } from '../lib/sanity'
 
+// lib/sanity-queries.ts
 export const projectsQuery = `
-  *[_type == "project"] | order(completionDate desc) {
+  *[_type == "project"] | order(_createdAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -14,15 +15,10 @@ export const projectsQuery = `
     year,
     location,
     status,
-    services,
-    designStyle,
-    budget,
-    "gallery": gallery[].asset->url,
     featured,
-    completionDate,
-    squareFeet
+    budget
   }
-`;
+`
 
 export const projectBySlugQuery = (slug: string) => `
   *[_type == "project" && slug.current == "${slug}"][0] {
@@ -69,6 +65,19 @@ export const searchProjectsQuery = (searchTerm: string) => `
 `;
 
 export const getCategoriesCount = async () => {
+  const client = getSanityClient();
+  if (!client) {
+    console.warn('Sanity client not available');
+    return {
+      all: 0,
+      commercial: 0,
+      residential: 0,
+      healthcare: 0,
+      retail: 0,
+      education: 0
+    };
+  }
+
   const query = `
     {
       "all": count(*[_type == "project"]),
@@ -79,5 +88,39 @@ export const getCategoriesCount = async () => {
       "education": count(*[_type == "project" && category == "education"])
     }
   `;
+  
   return await client.fetch(query);
+};
+
+// Helper function to fetch projects
+export const fetchProjects = async () => {
+  const client = getSanityClient();
+  if (!client) {
+    console.warn('Sanity client not available');
+    return [];
+  }
+  
+  return await client.fetch(projectsQuery);
+};
+
+// Helper function to fetch project by slug
+export const fetchProjectBySlug = async (slug: string) => {
+  const client = getSanityClient();
+  if (!client) {
+    console.warn('Sanity client not available');
+    return null;
+  }
+  
+  return await client.fetch(projectBySlugQuery(slug));
+};
+
+// Helper function to search projects
+export const searchProjects = async (searchTerm: string) => {
+  const client = getSanityClient();
+  if (!client) {
+    console.warn('Sanity client not available');
+    return [];
+  }
+  
+  return await client.fetch(searchProjectsQuery(searchTerm));
 };
