@@ -127,7 +127,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                 <div className="relative h-64 overflow-hidden">
                   {project.mainImage && (
                     <LuxuryImage
-                      src={urlFor(project.mainImage).url()}
+                     src={urlFor(project.mainImage)?.url() || ''}
                       alt={project.title}
                       width={400}
                       height={256}
@@ -190,7 +190,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                 <div className="md:w-1/4">
                   {project.mainImage && (
                     <LuxuryImage
-                      src={urlFor(project.mainImage).url()}
+                      src={urlFor(project.mainImage)?.url() || ''}
                       alt={project.title}
                       width={300}
                       height={200}

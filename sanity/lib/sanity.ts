@@ -51,7 +51,18 @@ function getBuilder() {
  */
 export function urlFor(source: SanityImageSource) {
   const builder = getBuilder();
-  if (!builder) return null;
+  if (!builder) {
+    // Return a safe mock during build
+    return {
+      url: () => '',
+      width: () => ({ url: () => '' }),
+      height: () => ({ url: () => '' }),
+      size: () => ({ url: () => '' }),
+      format: () => ({ url: () => '' }),
+      quality: () => ({ url: () => '' }),
+      auto: () => ({ url: () => '' }),
+    } as any;
+  }
   
   return builder.image(source);
 }

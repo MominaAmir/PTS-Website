@@ -32,9 +32,18 @@ export function getSanityClient(): SanityClient | null {
 /**
  * Safe image URL helper
  */
+// lib/sanity.ts
 export function urlFor(source: any) {
   const client = getSanityClient();
   if (!client) return null;
 
-  return imageUrlBuilder(client).image(source);
+  const builder = imageUrlBuilder(client);
+  
+  // Return an object with safe methods
+  return {
+    url: () => builder.image(source).url() || '',
+    width: (w: number) => builder.image(source).width(w),
+    height: (h: number) => builder.image(source).height(h),
+    // Add other methods you need
+  };
 }
