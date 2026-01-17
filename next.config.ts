@@ -18,16 +18,19 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-   images: {
-    remotePatterns: [
+    output: "export",          // REQUIRED for GitHub Pages
+  trailingSlash: true,       // REQUIRED
+  images: {
+     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
         pathname: '/images/**',
       },
     ],
+    unoptimized: true        // REQUIRED
   },
+   
   basePath: "/PTS-Website",
   assetPrefix: "/PTS-Website/",
 };
