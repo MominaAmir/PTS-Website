@@ -1,7 +1,7 @@
 // lib/types.ts
 export interface Project {
   _id: string
-  _createdAt?: string  // Add this line
+  _createdAt?: string
   title: string
   slug?: string
   category?: string | string[]
@@ -18,4 +18,7 @@ export interface Project {
   gallery?: string[]
   services?: string[]
   architect?: string
+  
+  // Add the missing property
+  designStyle?: string | string[]
 }
