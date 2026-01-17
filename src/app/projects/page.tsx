@@ -102,50 +102,51 @@ export default function ProjectsPage() {
   }, [projects, selectedCategory, searchTerm, sortBy])
 
   const fetchProjects = async () => {
-    setIsLoading(true)
-    try {
-      const client = getSanityClient();
-      if (!client) {
-        console.warn('Sanity client not available');
-        return;
-      }
-
-      const query = `
-        *[_type == "project"] | order(_createdAt desc) {
-          _id,
-          title,
-          "slug": slug.current,
-          category,
-          "image": mainImage.asset->url,
-          description,
-          area,
-          duration,
-          client,
-          year,
-          location,
-          status,
-          featured,
-          budget,
-          _createdAt,
-          "gallery": gallery[].asset->url,
-          services,
-          "architect": architect->name
-        }
-      `
-      const client = getSanityClient();
-if (!client) return; // or handle appropriately
-
-const data = await client.fetch(query);
-      setProjects(data)
-      updateCategoryCounts(data)
-    } catch (error) {
-      console.error('Error fetching projects:', error)
-      setProjects([])
-    } finally {
-      setIsLoading(false)
+  setIsLoading(true)
+  try {
+    const client = getSanityClient(); // <-- This is the first declaration
+    if (!client) {
+      console.warn('Sanity client not available');
+      setProjects([]); // Add this to clear projects
+      return;
     }
-  }
 
+    const query = `
+      *[_type == "project"] | order(_createdAt desc) {
+        _id,
+        title,
+        "slug": slug.current,
+        category,
+        "image": mainImage.asset->url,
+        description,
+        area,
+        duration,
+        client,
+        year,
+        location,
+        status,
+        featured,
+        budget,
+        _createdAt,
+        "gallery": gallery[].asset->url,
+        services,
+        "architect": architect->name
+      }
+    `
+    // REMOVE THIS DUPLICATE LINE:
+    // const client = getSanityClient();
+    // if (!client) return; // or handle appropriately
+    
+    const data = await client.fetch(query); // <-- Use the client from above
+    setProjects(data)
+    updateCategoryCounts(data)
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    setProjects([])
+  } finally {
+    setIsLoading(false)
+  }
+}
   const updateCategoryCounts = (projects: Project[]) => {
     const updatedCategories = CATEGORIES.map(category => {
       if (category.id === 'all') {
