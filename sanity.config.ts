@@ -1,16 +1,15 @@
-﻿import { visionTool } from '@sanity/vision'
-import { defineConfig } from 'sanity'
-import { structureTool } from 'sanity/structure'
+﻿import { defineConfig } from 'sanity'
+import { deskTool } from 'sanity/desk'
+import { schemaTypes } from './sanity/my-pts-website-project/schemaTypes'
 
 export default defineConfig({
-  basePath: '/studio',  // This should match your route
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'demo',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  name: 'pts-design',
+  title: 'PTS Design Studio',
+  projectId: 'y3t0y4ex',  // ← Hardcode your project ID here temporarily
+  dataset: 'production',   // ← Hardcode dataset
+    basePath: '/admin', 
+  plugins: [deskTool()],
   schema: {
-    types: [],
+    types: schemaTypes,
   },
-  plugins: [
-    structureTool(),
-    visionTool({ defaultApiVersion: '2023-08-01' }),
-  ],
 })

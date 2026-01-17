@@ -48,8 +48,10 @@ const Navbar = () => {
     },
     { name: 'Projects', href: '/projects', icon: '📂' },
     { name: 'Contact', href: '/contact', icon: '📞' },
+    
   ]
 
+  // <a href="/team">Team</a> 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)

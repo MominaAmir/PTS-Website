@@ -34,7 +34,7 @@ const CTA = () => {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="/contact"
+              href="/PTS-Website/contact"
               className="bg-white text-primary p-6 rounded-2xl hover:shadow-xl transition-all duration-300"
             >
               <div className="flex flex-col items-center">
