@@ -5,7 +5,6 @@ export function getSanityClient() {
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
   if (!projectId || !dataset) {
-    console.warn("Sanity env vars missing. Returning null client.");
     return null;
   }
 
