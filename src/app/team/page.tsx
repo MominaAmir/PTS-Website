@@ -14,7 +14,7 @@ import {
   Star,
   Calendar
 } from 'lucide-react'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 import Link from 'next/link'
 import PortableText from '../components/PortableText'
 
@@ -54,7 +54,10 @@ export default function TeamPage() {
         email,
         displayOrder
       }`
-      const data = await client.fetch(query)
+      const client = getSanityClient()
+if (!client) return // or throw/return early
+
+const data = await client.fetch(query)
       setTeam(data)
     } catch (error) {
       console.error('Error fetching team:', error)

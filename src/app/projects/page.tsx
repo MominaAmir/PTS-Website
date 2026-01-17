@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 import ProjectModal from '../components/ProjectModal'
 import { Project } from '../../../lib/types'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 
 // Category configuration
 const CATEGORIES = [
@@ -104,6 +104,13 @@ export default function ProjectsPage() {
   const fetchProjects = async () => {
     setIsLoading(true)
     try {
+      const client = getSanityClient()
+      if (!client) {
+        console.error('Sanity client not available')
+        setProjects([])
+        return
+      }
+
       const query = `
         *[_type == "project"] | order(_createdAt desc) {
           _id,

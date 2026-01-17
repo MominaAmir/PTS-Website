@@ -1,9 +1,11 @@
 import { createClient } from "@sanity/client";
+import type { SanityClient } from "@sanity/client";
 
-export function getSanityClient() {
+export function getSanityClient(): SanityClient | null {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
+  // HARD GUARD — build MUST NOT crash
   if (!projectId || !dataset) {
     return null;
   }

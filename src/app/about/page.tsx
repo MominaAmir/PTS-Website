@@ -17,7 +17,7 @@ import {
   ChevronRight,
   Heart
 } from 'lucide-react'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 import PortableText from '../components/PortableText'
 
 interface TeamMember {
@@ -53,7 +53,10 @@ export default function AboutPage() {
         expertise,
         displayOrder
       }`
-      const data = await client.fetch(query)
+      const client = getSanityClient()
+if (!client) return // or throw/return early
+
+const data = await client.fetch(query)
       setTeam(data)
     } catch (error) {
       console.error('Error fetching team:', error)

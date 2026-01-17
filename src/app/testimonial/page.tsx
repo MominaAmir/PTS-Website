@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 import { Star, Quote } from 'lucide-react'
 
 interface Testimonial {

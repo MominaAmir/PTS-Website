@@ -1,4 +1,4 @@
-import { client } from './sanity';
+import { getSanityClient } from './sanity';
 
 export const projectsQuery = `
   *[_type == "project"] | order(completionDate desc) {

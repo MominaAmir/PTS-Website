@@ -1,6 +1,6 @@
 
 
-import { client } from '../../lib/sanity'
+import { getSanityClient } from '../../lib/sanity'
 
 // lib/sanity-queries.ts
 export const projectsQuery = `

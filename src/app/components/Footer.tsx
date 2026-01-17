@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 
 // Import sanity client
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 
 interface FooterData {
   phone?: string
@@ -65,7 +65,10 @@ export default function Footer() {
         linkedin,
         workingHours
       }`
-      const data = await client.fetch(query)
+      const client = getSanityClient()
+if (!client) return // or throw/return early
+
+const data = await client.fetch(query)
       setFooterData(data || {})
     } catch (error) {
       console.error('Error fetching footer data:', error)

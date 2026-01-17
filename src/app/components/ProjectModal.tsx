@@ -3,7 +3,7 @@
 import { X, MapPin, Calendar, Users, Ruler, DollarSign, Building } from 'lucide-react'
 import { Project } from '../../../lib/types'
 import { useEffect, useState } from 'react'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 
 interface ProjectModalProps {
   project: Project

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { client } from '../../../lib/sanity'
+import { getSanityClient } from '../../../lib/sanity'
 import { 
   Wrench, 
   Palette, 
@@ -209,7 +209,10 @@ export default function ServicesPage() {
         projects,
         duration
       }`
-      const data = await client.fetch(query)
+      const client = getSanityClient()
+if (!client) return // or throw/return early
+
+const data = await client.fetch(query)
       
       // Use Sanity data if available, otherwise use defaults
       const displayServices = data.length > 0 ? data : defaultServices
