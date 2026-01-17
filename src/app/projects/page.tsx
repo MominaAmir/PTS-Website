@@ -104,11 +104,10 @@ export default function ProjectsPage() {
   const fetchProjects = async () => {
     setIsLoading(true)
     try {
-      const client = getSanityClient()
+      const client = getSanityClient();
       if (!client) {
-        console.error('Sanity client not available')
-        setProjects([])
-        return
+        console.warn('Sanity client not available');
+        return;
       }
 
       const query = `
@@ -133,7 +132,10 @@ export default function ProjectsPage() {
           "architect": architect->name
         }
       `
-      const data = await client.fetch(query)
+      const client = getSanityClient();
+if (!client) return; // or handle appropriately
+
+const data = await client.fetch(query);
       setProjects(data)
       updateCategoryCounts(data)
     } catch (error) {

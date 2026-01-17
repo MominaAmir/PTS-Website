@@ -53,10 +53,10 @@ export default function AboutPage() {
         expertise,
         displayOrder
       }`
-      const client = getSanityClient()
-if (!client) return // or throw/return early
+const client = getSanityClient();
+if (!client) return; // or handle appropriately
 
-const data = await client.fetch(query)
+const data = await client.fetch(query);
       setTeam(data)
     } catch (error) {
       console.error('Error fetching team:', error)

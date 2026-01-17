@@ -48,7 +48,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           fullDescription
         }
       `
-      const data = await client.fetch(query)
+      const client = getSanityClient();
+if (!client) return; // or handle appropriately
+
+const data = await client.fetch(query);
       setFullProject(data)
     } catch (error) {
       console.error('Error fetching project details:', error)

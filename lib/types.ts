@@ -18,4 +18,6 @@ export interface Project {
   gallery?: string[];
   services?: string[];
   architect?: string;
+  
+  designStyle?: string | string[]
 }

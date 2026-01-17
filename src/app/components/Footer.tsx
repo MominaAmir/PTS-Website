@@ -65,10 +65,10 @@ export default function Footer() {
         linkedin,
         workingHours
       }`
-      const client = getSanityClient()
-if (!client) return // or throw/return early
+const client = getSanityClient();
+if (!client) return; // or handle appropriately
 
-const data = await client.fetch(query)
+const data = await client.fetch(query);
       setFooterData(data || {})
     } catch (error) {
       console.error('Error fetching footer data:', error)

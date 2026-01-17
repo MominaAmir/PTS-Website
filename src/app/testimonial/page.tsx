@@ -31,7 +31,10 @@ export default function TestimonialsSection() {
         rating,
         location
       }`
-      const data = await client.fetch(query)
+      const client = getSanityClient();
+if (!client) return; // or handle appropriately
+
+const data = await client.fetch(query);
       setTestimonials(data)
     } catch (error) {
       console.error('Error fetching testimonials:', error)

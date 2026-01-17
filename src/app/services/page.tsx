@@ -209,10 +209,10 @@ export default function ServicesPage() {
         projects,
         duration
       }`
-      const client = getSanityClient()
-if (!client) return // or throw/return early
+const client = getSanityClient();
+if (!client) return; // or handle appropriately
 
-const data = await client.fetch(query)
+const data = await client.fetch(query);
       
       // Use Sanity data if available, otherwise use defaults
       const displayServices = data.length > 0 ? data : defaultServices
