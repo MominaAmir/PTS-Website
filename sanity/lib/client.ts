@@ -1,3 +1,4 @@
+// sanity/lib/client.ts
 import { createClient } from "@sanity/client";
 import type { SanityClient } from "@sanity/client";
 
@@ -17,3 +18,6 @@ export function getSanityClient(): SanityClient | null {
     useCdn: true,
   });
 }
+
+// For backward compatibility - NOT RECOMMENDED for build safety
+// export const client = getSanityClient();
