@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Filter, 
-  Grid, 
-  List, 
-  Search, 
-  Eye, 
-  Calendar, 
-  MapPin, 
-  Users, 
+import {
+  Filter,
+  Grid,
+  List,
+  Search,
+  Eye,
+  Calendar,
+  MapPin,
+  Users,
   Loader2,
   Building,
   Sparkles,
@@ -41,13 +41,13 @@ const getGradientStyle = (colorString: string) => {
       background: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)' // Default blue gradient
     }
   }
-  
+
   try {
     const parts = colorString.split(' ')
     if (parts.length >= 3) {
       const fromColor = parts[0].replace('from-', '').replace(/(\d+)$/, '-$1') || 'blue-600'
       const toColor = parts[2].replace('to-', '').replace(/(\d+)$/, '-$1') || 'cyan-500'
-      
+
       // Convert Tailwind colors to hex for CSS
       const colorMap: Record<string, string> = {
         'blue-600': '#2563eb',
@@ -63,10 +63,10 @@ const getGradientStyle = (colorString: string) => {
         'indigo-600': '#4f46e5',
         'violet-500': '#8b5cf6',
       }
-      
+
       const fromHex = colorMap[fromColor] || '#2563eb'
       const toHex = colorMap[toColor] || '#06b6d4'
-      
+
       return {
         background: `linear-gradient(135deg, ${fromHex} 0%, ${toHex} 100%)`
       }
@@ -74,7 +74,7 @@ const getGradientStyle = (colorString: string) => {
   } catch (error) {
     console.warn('Error parsing gradient color:', error)
   }
-  
+
   return {
     background: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)'
   }
@@ -102,16 +102,16 @@ export default function ProjectsPage() {
   }, [projects, selectedCategory, searchTerm, sortBy])
 
   const fetchProjects = async () => {
-  setIsLoading(true)
-  try {
-    const client = getSanityClient(); // <-- This is the first declaration
-    if (!client) {
-      console.warn('Sanity client not available');
-      setProjects([]); // Add this to clear projects
-      return;
-    }
+    setIsLoading(true)
+    try {
+      const client = getSanityClient(); // <-- This is the first declaration
+      if (!client) {
+        console.warn('Sanity client not available');
+        setProjects([]); // Add this to clear projects
+        return;
+      }
 
-    const query = `
+      const query = `
       *[_type == "project"] | order(_createdAt desc) {
         _id,
         title,
@@ -133,26 +133,26 @@ export default function ProjectsPage() {
         "architect": architect->name
       }
     `
-    // REMOVE THIS DUPLICATE LINE:
-    // const client = getSanityClient();
-    // if (!client) return; // or handle appropriately
-    
-    const data = await client.fetch(query); // <-- Use the client from above
-    setProjects(data)
-    updateCategoryCounts(data)
-  } catch (error) {
-    console.error('Error fetching projects:', error)
-    setProjects([])
-  } finally {
-    setIsLoading(false)
+      // REMOVE THIS DUPLICATE LINE:
+      // const client = getSanityClient();
+      // if (!client) return; // or handle appropriately
+
+      const data = await client.fetch(query); // <-- Use the client from above
+      setProjects(data)
+      updateCategoryCounts(data)
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+      setProjects([])
+    } finally {
+      setIsLoading(false)
+    }
   }
-}
   const updateCategoryCounts = (projects: Project[]) => {
     const updatedCategories = CATEGORIES.map(category => {
       if (category.id === 'all') {
         return { ...category, count: projects.length }
       }
-      
+
       const count = projects.filter(p => {
         if (!p.category) return false
         if (Array.isArray(p.category)) {
@@ -160,10 +160,10 @@ export default function ProjectsPage() {
         }
         return p.category === category.id
       }).length
-      
+
       return { ...category, count }
     })
-    
+
     setCategories(updatedCategories)
   }
 
@@ -189,7 +189,7 @@ export default function ProjectsPage() {
         (project.description && project.description.toLowerCase().includes(term)) ||
         (project.location && project.location.toLowerCase().includes(term)) ||
         (project.client && project.client.toLowerCase().includes(term)) ||
-        (Array.isArray(project.services) && project.services.some((s: string) => 
+        (Array.isArray(project.services) && project.services.some((s: string) =>
           s.toLowerCase().includes(term)
         ))
       )
@@ -237,7 +237,7 @@ export default function ProjectsPage() {
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full blur-3xl" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -254,14 +254,14 @@ export default function ProjectsPage() {
               <Building className="w-4 h-4" />
               <span className="text-sm font-semibold">OUR PORTFOLIO</span>
             </motion.div>
-            
+
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
               <span className="block">Featured</span>
               <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Projects
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
               Explore our collection of premium projects across Dubai and the UAE.
               Each project reflects our commitment to quality, innovation, and client satisfaction.
@@ -272,29 +272,40 @@ export default function ProjectsPage() {
       </section>
 
       {/* Filters & Controls */}
+      {/* Filters & Controls - UPDATED FOR MOBILE */}
       <section className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            {/* Categories */}
-            <div className="flex-1 overflow-x-auto">
-              <div className="flex space-x-2 pb-2">
+          <div className="flex flex-col gap-4">
+            {/* Categories Row */}
+            <div className="w-full">
+              {/* Use the fixed categories code from above */}
+              <div className="flex flex-wrap gap-2 pb-2">
                 {categories.map((category) => (
                   <motion.button
                     key={category.id}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`relative px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 ${
-                      selectedCategory === category.id
-                        ? `text-white shadow-lg ${getCategoryColor(category.id)}`
+                    className={`
+                relative 
+                px-3 py-1.5 md:px-4 md:py-2 
+                rounded-lg md:rounded-xl 
+                font-medium md:font-semibold 
+                whitespace-nowrap 
+                transition-all duration-300 
+                text-sm md:text-base
+                flex-shrink-0
+                ${selectedCategory === category.id
+                        ? `text-white shadow-md md:shadow-lg ${getCategoryColor(category.id)}`
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                      }
+                ${isLoading || category.count === 0 ? 'opacity-50 cursor-not-allowed' : ''}
+              `}
                     disabled={isLoading || category.count === 0}
                   >
-                    {category.name}
-                    <span className={`ml-2 text-xs ${
-                      selectedCategory === category.id ? 'text-white/80' : 'text-gray-500'
-                    }`}>
+                    <span className="truncate">{category.name}</span>
+                    <span className={`ml-1.5 md:ml-2 text-xs ${selectedCategory === category.id ? 'text-white/80' : 'text-gray-500'
+                      }`}>
                       ({category.count})
                     </span>
                   </motion.button>
@@ -302,11 +313,11 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex items-center gap-3">
+            {/* Search and Controls Row */}
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
               {/* Search */}
-              <motion.div 
-                className="relative"
+              <motion.div
+                className="relative w-full sm:w-auto"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
@@ -317,7 +328,7 @@ export default function ProjectsPage() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search projects..."
-                  className="w-full md:w-64 pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                   disabled={isLoading}
                 />
                 {searchTerm && (
@@ -330,44 +341,47 @@ export default function ProjectsPage() {
                 )}
               </motion.div>
 
-              {/* View Toggle */}
-              <motion.div 
-                className="flex border border-gray-300 rounded-xl overflow-hidden bg-white"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2.5 ${viewMode === 'grid' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'hover:bg-gray-50'}`}
-                  disabled={isLoading}
+              {/* View Toggle and Filter Button */}
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                {/* View Toggle */}
+                <motion.div
+                  className="flex border border-gray-300 rounded-xl overflow-hidden bg-white flex-shrink-0"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
                 >
-                  <Grid className="w-5 h-5" />
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setViewMode('list')}
-                  className={`p-2.5 ${viewMode === 'list' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'hover:bg-gray-50'}`}
-                  disabled={isLoading}
-                >
-                  <List className="w-5 h-5" />
-                </motion.button>
-              </motion.div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setViewMode('grid')}
+                    className={`p-2.5 ${viewMode === 'grid' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'hover:bg-gray-50'}`}
+                    disabled={isLoading}
+                  >
+                    <Grid className="w-5 h-5" />
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setViewMode('list')}
+                    className={`p-2.5 ${viewMode === 'list' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'hover:bg-gray-50'}`}
+                    disabled={isLoading}
+                  >
+                    <List className="w-5 h-5" />
+                  </motion.button>
+                </motion.div>
 
-              {/* Filter Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold flex items-center gap-2"
-              >
-                <Filter className="w-4 h-4" />
-                <span className="hidden md:inline">Filters</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-              </motion.button>
+                {/* Filter Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 flex-1 sm:flex-none justify-center"
+                >
+                  <Filter className="w-4 h-4" />
+                  <span className="hidden sm:inline">Filters</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+                </motion.button>
+              </div>
             </div>
           </div>
 
@@ -396,18 +410,17 @@ export default function ProjectsPage() {
                           <button
                             key={option.id}
                             onClick={() => setSortBy(option.id as any)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                              sortBy === option.id
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === option.id
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
                             {option.label}
                           </button>
                         ))}
                       </div>
                     </div>
-                    
+
                     {(selectedCategory !== 'all' || searchTerm || sortBy !== 'newest') && (
                       <motion.button
                         initial={{ opacity: 0 }}
@@ -573,7 +586,7 @@ function ProjectCard({ project, viewMode, index, onClick }: ProjectCardProps) {
 
   const getCategoryColor = () => {
     if (!categoryDisplay) return 'from-blue-600 to-cyan-500'
-    
+
     const colorMap: Record<string, string> = {
       commercial: 'from-purple-600 to-pink-500',
       residential: 'from-emerald-600 to-teal-500',
@@ -582,7 +595,7 @@ function ProjectCard({ project, viewMode, index, onClick }: ProjectCardProps) {
       hospitality: 'from-indigo-600 to-violet-500',
       educational: 'from-blue-600 to-cyan-500'
     }
-    
+
     return colorMap[categoryDisplay.toLowerCase()] || 'from-blue-600 to-purple-500'
   }
 
@@ -620,7 +633,7 @@ function ProjectCard({ project, viewMode, index, onClick }: ProjectCardProps) {
               <Building className="w-16 h-16 text-gray-400" />
             </div>
           )}
-          
+
           {/* View Button */}
           <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-sm">
@@ -636,7 +649,7 @@ function ProjectCard({ project, viewMode, index, onClick }: ProjectCardProps) {
           <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-1">
             {project.title || 'Untitled Project'}
           </h3>
-          
+
           <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">
             {project.description || 'No description available.'}
           </p>
